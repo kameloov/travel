@@ -1,3 +1,48 @@
 page-signup {
+ .bg{
+    background: rgb(157,213,58);
+    background: -moz-linear-gradient(top, rgba(157,213,58,1) 0%, rgba(161,213,79,1) 50%, rgba(128,194,23,1) 51%, rgba(124,188,10,1) 100%);
+    background: -webkit-linear-gradient(top, rgba(157,213,58,1) 0%,rgba(161,213,79,1) 50%,rgba(128,194,23,1) 51%,rgba(124,188,10,1) 100%);
+    background: linear-gradient(to bottom, rgba(157,213,58,1) 0%,rgba(161,213,79,1) 50%,rgba(128,194,23,1) 51%,rgba(124,188,10,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dd53a', endColorstr='#7cbc0a',GradientType=0 );
+ }
 
+ .profile-image-wrapper {
+    text-align: center;
+    margin: 20px 0;
+
+    .profile-image {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+
+      display: inline-block;
+
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .profile-image-placeholder {
+      display: inline-block;
+
+      background-color: #eee;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+
+      font-size: 12px;
+
+      ion-icon {
+        font-size: 44px;
+        margin-bottom: -10px;
+        margin-top: 10px;
+      }
+
+    }
+  }
+
+  .item-label{
+    color : #a0a0a0;
+  }
 }

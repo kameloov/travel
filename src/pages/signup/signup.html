@@ -1,26 +1,48 @@
 <ion-header>
+    <ion-navbar>
+      <ion-title> Register</ion-title>
+    </ion-navbar>
+  
+  </ion-header>
 
-  <ion-navbar>
-    <ion-title>{{ 'SIGNUP_TITLE' | translate }}</ion-title>
-  </ion-navbar>
+<ion-content >
 
-</ion-header>
-
-
-<ion-content>
-  <form (submit)="doSignup()">
+  <ion-card>
+  <form *ngIf="form" [formGroup]="form" (submit)="doSignup()">
+      <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+      <div class="profile-image-wrapper" (click)="getPicture()">
+        <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
+          <ion-icon name="add"></ion-icon>
+          <div>
+           Add Image
+          </div>
+        </div>
+        <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
+      </div>
     <ion-list>
 
       <ion-item>
-        <ion-label fixed>{{ 'NAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.name" name="name"></ion-input>
+        <ion-label floating >Name *</ion-label>
+        <ion-input type="text" formControlName="name" ></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <ion-label floating>Email *</ion-label>
+        <ion-input type="email"formControlName="email" ></ion-input>
       </ion-item>
-
+        <ion-row padding >
+          <ion-col col-3>
+              <ion-label  class="item-label">Country *</ion-label>
+          </ion-col>
+          <ion-col col-9>
+            <button ion-button type = "button" outline text-center block (click)="showCountries()">{{country!=null ? country.country_name:'select country'}}</button>
+          </ion-col>
+        </ion-row>
+        <!-- 
+        <ion-select formControlName="country"  multiple="false" >
+          <ion-option *ngFor="let c of countries" [value]="c.id">{{c.country_name}}</ion-option>
+        </ion-select> -->
+  
       <!--
       Want to add a Username? Here you go:
 
@@ -31,14 +53,29 @@
       -->
 
       <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        <ion-label >Password *</ion-label>
+        <ion-input type="password" formControlName="password"  required></ion-input>
       </ion-item>
 
-      <div padding>
-        <button ion-button color="primary" block>{{ 'SIGNUP_BUTTON' | translate }}</button>
-      </div>
+      
+      <ion-item>
+        <ion-label >Confirm Password *</ion-label>
+        <ion-input type="password"   required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label >Phone</ion-label>
+        <ion-input type="number" formControlName="phone"   ></ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-label >Address</ion-label>
+        <ion-input type="text" formControlName="address" name="address"></ion-input>
+      </ion-item>
+      <div padding>
+        <button ion-button color="primary" type="submit" block [disabled]="!form.valid">Register</button>
+      </div>
     </ion-list>
   </form>
+
+</ion-card>
 </ion-content>

@@ -3,6 +3,7 @@ import 'rxjs/add/operator/toPromise';
 import { Injectable } from '@angular/core';
 
 import { Api } from '../api/api';
+import { AccountInfo } from '../../models/AccountInfo';
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -25,7 +26,7 @@ import { Api } from '../api/api';
  */
 @Injectable()
 export class User {
-  _user: any;
+  _user: AccountInfo;
 
   constructor(public api: Api) { }
 
@@ -34,16 +35,19 @@ export class User {
    * the user entered on the form.
    */
   login(accountInfo: any) {
-    let seq = this.api.post('login', accountInfo).share();
+    let seq = this.api.post('users/login', accountInfo);
 
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
-      if (res.status == 'success') {
-        this._loggedIn(res);
+      if (res.success == 1) {
+        console.log(JSON.stringify(res));
+        accountInfo= res.data;
+        this._loggedIn(accountInfo);
       } else {
+
       }
     }, err => {
-      console.error('ERROR', err);
+      console.error(JSON.stringify(err));
     });
 
     return seq;
@@ -54,15 +58,17 @@ export class User {
    * the user entered on the form.
    */
   signup(accountInfo: any) {
-    let seq = this.api.post('signup', accountInfo).share();
+    let seq = this.api.post('users/register', accountInfo);
 
     seq.subscribe((res: any) => {
+      console.log(JSON.stringify(res));
       // If the API returned a successful response, mark the user as logged in
-      if (res.status == 'success') {
-        this._loggedIn(res);
+      if (res.success == 1) {
+        accountInfo.id = res.data;
+        this._user = accountInfo;
       }
     }, err => {
-      console.error('ERROR', err);
+      console.error(JSON.stringify(err));
     });
 
     return seq;
@@ -79,6 +85,6 @@ export class User {
    * Process a login/signup response to store user data
    */
   _loggedIn(resp) {
-    this._user = resp.user;
+    this._user = resp;
   }
 }
