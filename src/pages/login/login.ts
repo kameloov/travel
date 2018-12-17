@@ -32,7 +32,8 @@ export class LoginPage {
   doLogin() {
     this.user.login(this.account).subscribe((resp) => {
       if(resp['success']==1)
-      this.navCtrl.push(MainPage);
+      
+      this.navCtrl.push(MainPage,{profile:resp['data'][0]});
       else
       this.showError();
     }, (err) => {

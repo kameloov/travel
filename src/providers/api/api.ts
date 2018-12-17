@@ -9,6 +9,7 @@ export class Api {
   url: string = 'http://myoriental-music.com/shop/service';
 
   constructor(public http: HttpClient) {
+  
   }
 
   get(endpoint: string, params?: any, reqOpts?: any) {

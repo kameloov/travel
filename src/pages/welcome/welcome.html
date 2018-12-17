@@ -3,11 +3,21 @@
   <div class="splash-info">
     <div class="splash-logo"></div>
     <div class="splash-intro">
-      {{ 'WELCOME_INTRO' | translate }}
+        Welcome to Travel App
     </div>
   </div>
   <div padding>
     <button ion-button block (click)="signup()">{{ 'SIGNUP' | translate }}</button>
-    <button ion-button block (click)="login()" class="login">{{ 'LOGIN' | translate }}</button>
+    <button ion-button block (click)="login($event)" class="login">{{ 'LOGIN' | translate }}</button>
   </div>
+  <button ion-button menuToggle>Toggle Menu</button>
+  <!-- <ion-fab>
+      <button ion-fab>Button</button>
+      <ion-fab-list side="top">
+          <button ion-fab>Facebook</button>
+          <button ion-fab>Twitter</button>
+          <button ion-fab>Youtube</button>
+        </ion-fab-list>
+    </ion-fab>
+   --> 
 </ion-content>

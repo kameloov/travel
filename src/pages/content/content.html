@@ -6,8 +6,77 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <p>
-    This is a perfect starting point for a page with primarily text content. The body is padded nicely and ready for prose.
-  </p>
+<ion-content>
+  <ion-card>
+    <ion-card-content text-center>
+      <ion-item text-center *ngIf="updating">
+        <ion-spinner name="bubbles" margin-top></ion-spinner>
+      </ion-item>
+      <ion-row align-items-center>
+        <ion-col col-4>
+          <form *ngIf="form" [formGroup]="form" (submit)="updatePicture()">
+            <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+            <div class="profile-image-wrapper" (click)="getPicture()">
+              <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
+                <img [src]="'http://myoriental-music.com/shop/service/icons/'+profile.avatar">
+              </div>
+              <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
+            </div>
+          </form>
+          <button ion-button icon-only (click)="getPicture()">
+            <ion-icon name="create" ></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col col-8>
+          <ion-row align-items-center>
+            <ion-col col-4 align-self-center>Name : </ion-col>
+            <ion-col col-8 *ngIf="!edit">{{profile.name}}</ion-col>
+            <ion-col col-8 *ngIf="edit">
+              <ion-item>
+                <ion-input class="edit" [(ngModel)]="profile.name"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+      <hr>
+      <ion-row padding>
+        <ion-col col-4 align-self-center>Email : </ion-col>
+        <ion-col col-8>{{profile.email}}</ion-col>
+      </ion-row>
+      <hr>
+      <ion-row padding>
+        <ion-col col-4 align-self-center>Phone : </ion-col>
+        <ion-col col-8 *ngIf="!edit">{{profile.phone}}</ion-col>
+        <ion-col col-8 *ngIf="edit">
+          <ion-item>
+            <ion-input type="number" [(ngModel)]="profile.phone"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <hr>
+      <ion-row padding>
+        <ion-col col-5>
+          <ion-label class="item-label" align-self-center>Country </ion-label>
+        </ion-col>
+        <ion-col col-7>
+          <button ion-button type="button" *ngIf="edit" outline text-center block (click)="showCountries()">{{profile.country_name}}</button>
+          <ion-label *ngIf="!edit">{{profile.country_name}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <hr>
+      <ion-row padding>
+        <ion-col col-4 align-self-center>Address : </ion-col>
+        <ion-col col-8 *ngIf="!edit">{{profile.address}}</ion-col>
+        <ion-col col-8 *ngIf="edit">
+          <ion-item>
+            <ion-input type="text" class="edit-txt" [(ngModel)]="profile.address"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-item>
+        <button ion-button block (click)="toggleEdit()">{{edit ? 'Save':'Edit'}}</button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

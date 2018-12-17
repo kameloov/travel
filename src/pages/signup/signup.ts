@@ -26,6 +26,7 @@ export class SignupPage {
   private signupErrorString: string;
   form: FormGroup;
   public country : any;
+  public working : boolean ;
 
 
   constructor(public navCtrl: NavController, public user: User, public toastCtrl: ToastController,
@@ -84,7 +85,7 @@ export class SignupPage {
     reader.readAsDataURL(event.target.files[0]);
   }
 
-  
+
   public showCountries() {
     let addModal = this.modalCtrl.create('CountryListPage');
     addModal.onDidDismiss(country => {
@@ -102,10 +103,18 @@ export class SignupPage {
   }
 
   doSignup() {
+    this.working = true;
     // Attempt to login in through our User service
     this.user.signup(this.form.value).subscribe((resp) => {
+      this.working = false;
       if (resp['success'] == 1) {
         this.navCtrl.push(MainPage);
+        let toast = this.toastCtrl.create({
+          message: 'Registerd successfully',
+          duration: 2000,
+          position: 'top'
+        });
+        toast.present();
       } else {
         let toast = this.toastCtrl.create({
           message: resp['message'],
@@ -115,7 +124,7 @@ export class SignupPage {
         toast.present();
       }
     }, (err) => {
-
+        this.working = false;
       // this.navCtrl.push(MainPage);
 
       // Unable to sign up

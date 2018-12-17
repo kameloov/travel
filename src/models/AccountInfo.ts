@@ -8,5 +8,6 @@ export class AccountInfo{
     fcm_key:string = "null";
     logged:number;
     gender:number=0;
+    country_id : number;
     
 }
