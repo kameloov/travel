@@ -25,7 +25,7 @@
     <ion-card>
       <ion-card-title *ngIf ="!requests ||requests.length ==0" text-center> No Data !!</ion-card-title>
     </ion-card>
-    <ion-card *ngFor="let r  of requests">
+    <ion-card *ngFor="let r  of requests"(click) ="showDetails()">
       <ion-card-title text-center> 
         {{r.title}}
       </ion-card-title>

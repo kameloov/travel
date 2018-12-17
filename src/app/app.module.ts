@@ -14,6 +14,7 @@ import { Settings, User, Api } from '../providers';
 import { MyApp } from './app.component';
 import { RequestsProvider } from '../providers/requests-service/requests-service';
 import { AlertProvider } from '../providers/alert/alert';
+import { OfferProvider } from '../providers/offer/offer';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -69,7 +70,8 @@ export function provideSettings(storage: Storage) {
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     RequestsProvider,
-    AlertProvider
+    AlertProvider,
+    OfferProvider
   ]
 })
 export class AppModule { }

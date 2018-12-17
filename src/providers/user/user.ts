@@ -28,7 +28,7 @@ import { AccountInfo } from '../../models/AccountInfo';
 export class User {
   _user: AccountInfo;
 
-  constructor(public api: Api) { }
+  constructor(public api: Api,public storage : Storage) { }
 
   /**
    * Send a POST request to our login endpoint with the data
@@ -36,12 +36,12 @@ export class User {
    */
   login(accountInfo: any) {
     let seq = this.api.post('users/login', accountInfo).share();
-
     seq.subscribe((res: any) => {
       // If the API returned a successful response, mark the user as logged in
       if (res.success == 1) {
         console.log(JSON.stringify(res));
         accountInfo= res.data;
+        this.saveUser(accountInfo);
         this._loggedIn(accountInfo);
       } else {
 
@@ -53,6 +53,14 @@ export class User {
     return seq;
   }
 
+
+  saveUser(user : AccountInfo){
+    this.storage.setItem('USER_INFO',JSON.stringify(user));
+  }
+
+  getUser(){
+    return (JSON.parse(this.storage.getItem('USER_INFO')));
+  }
   /**
    * Send a POST request to our signup endpoint with the data
    * the user entered on the form.
@@ -65,6 +73,7 @@ export class User {
       // If the API returned a successful response, mark the user as logged in
       if (res.success == 1) {
         accountInfo.id = res.data;
+        this.saveUser(accountInfo);
         this._user = accountInfo;
       }
     }, err => {

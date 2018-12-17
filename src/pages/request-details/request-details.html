@@ -13,6 +13,33 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+
+  <ion-card>
+    <ion-card-title>
+      {{request.title}}
+    </ion-card-title>
+    <ion-card-content>
+      <ion-item>
+        <p>{{request.details}}</p>
+      </ion-item>
+      <ion-item>
+        <button ion-button *ngIf="!user.id==request.user_id">{{ADD_OFFER|translate}}</button>
+        <button ion-button color="danger" *ngIf="user.id==request.user_id">{{DELETE|translate}}</button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngIf="offerList$ | async as offers">
+    <ion-card *ngFor=" let o of offers">
+      <ion-item>
+
+      </ion-item>
+      <ion-item>
+        
+      </ion-item>
+    </ion-card>
+  </div>
+
 
 </ion-content>

@@ -34,6 +34,11 @@ export class RequestListPage {
   public setCategory(){
     this.requestList$ = this.requestService.getRequests(this.categoryId);
   }
+
+  showDetails(){
+
+  }
+  
   ionViewDidEnter(){
 
   }
