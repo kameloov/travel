@@ -13,8 +13,8 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
+<ion-content class="bg" padding>
+  <ion-item *ngIf="1==2">
     <ion-select [(ngModel)]="categoryId" *ngIf="categoryList$ | async  as categories" (ngModelChange)="setCategory() "
       interface="popover">
       <ion-option value=0> all</ion-option>
@@ -22,16 +22,26 @@
     </ion-select>
   </ion-item>
   <div *ngIf="requestList$ | async as requests">
+      <ion-card  calss= "card" *ngFor="let r  of requests"(click) ="showDetails(r)">
+          <ion-item>
+            <ion-avatar *ngIf="r.avatar!='null'" item-start>
+              <img [src]="img_url+'/'+r.avatar">
+            </ion-avatar>
+            <ion-avatar *ngIf = "r.avatar=='null'" item-start>
+                <img src="img/marty-avatar.png">
+              </ion-avatar>
+            <h2 ion-text color="secondary">{{r.name}}</h2>
+          </ion-item>
+          <hr>
+          <ion-card-content text-center>
+            <h2 ion-text color="primary">{{r.title}}</h2>
+            <br>
+            <p>{{r.details}}</p>
+          </ion-card-content>
+       
+        </ion-card>
     <ion-card>
-      <ion-card-title *ngIf ="!requests ||requests.length ==0" text-center> No Data !!</ion-card-title>
-    </ion-card>
-    <ion-card *ngFor="let r  of requests"(click) ="showDetails()">
-      <ion-card-title text-center> 
-        {{r.title}}
-      </ion-card-title>
-      <ion-card-content>
-        <p>{{r.details}}</p>
-      </ion-card-content>
+      <ion-card-title *ngIf ="!requests ||requests.length ==0" text-center> <ion-spinner></ion-spinner></ion-card-title>
     </ion-card>
   </div>
 </ion-content>

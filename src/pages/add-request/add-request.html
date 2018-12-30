@@ -9,21 +9,24 @@
     <ion-title>addRequest</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content class="bg" padding>
   <ion-card>
     <ion-card-content>
+        <ion-item>
+          <ion-label >Category :  </ion-label>
+            <ion-select padding-right [(ngModel)]="request.category_id" *ngIf="categoryList$ | async  as categories">
+              <ion-option *ngFor=" let c of categories.data" [value]="c.id"> {{c.name}}</ion-option>
+            </ion-select>
+          </ion-item>
       <ion-item>
-        <ion-input type="text" [(ngModel)="request.title" placeholder="{{TITLE|translate}}" ]></ion-input>
+        <ion-input type="text" [(ngModel)]="request.title" placeholder="Request Title " ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input type="text" [(ngModel)="request.details" placeholder="{{TITLE|translate}}" ]></ion-input>
+        <ion-textarea  type="text" [(ngModel)]="request.details" placeholder="Request Description" ></ion-textarea>
       </ion-item>
-      <ion-item>
-        <button ion-button color="primary"(click)="add()">{{ADD|trnslate}}</button>
-        <button ion-button color="light"(click)="cancel()">{{CANCEL|trnslate}}</button>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-
+      <hr>
+        <button ion-button color="primary"(click)="add()">Add</button>
+        <button ion-button color="light"(click)="cancel()">Cancel</button>
+      </ion-card-content>
+      </ion-card>
 </ion-content>

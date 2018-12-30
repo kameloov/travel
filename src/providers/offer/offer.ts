@@ -32,6 +32,21 @@ export class OfferProvider {
     })
     return this._offers.asObservable();
   }
+  
+  refresh(){
+    this.http.get(SERVICE_URl + 'offers/' + this.requestId + '/0').subscribe(data => {
+      if (data)
+      this._offers.next(data['data']);
+    })
+  }
+
+  addOffer(offer : Offer){
+    return this.http.post(SERVICE_URl+'offer',offer);
+  }
+
+  delete(offer : Offer){
+    return this.http.delete(SERVICE_URl+'offer/'+offer.id);
+  }
 
   loadMoreOffers() {
     let current = this._offers.value;

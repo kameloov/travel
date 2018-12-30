@@ -7,37 +7,115 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>requestDetails</ion-title>
+    <ion-title>Request Details </ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
-<ion-content>
-
+<ion-content class="bg">
   <ion-card>
-    <ion-card-title>
-      {{request.title}}
-    </ion-card-title>
+    <ion-item>
+      <ion-avatar *ngIf="request.avatar!='null'" item-start>
+        <img [src]="img_url+'/'+request.avatar">
+      </ion-avatar>
+      <ion-avatar *ngIf="!request.avatar=='null'" item-start>
+        <img src="img/marty-avatar.png">
+      </ion-avatar>
+      <h2 ion-text color="secondary">{{request.name}}</h2>
+    </ion-item>
+    <hr>
+    <ion-card-content text-center>
+      <h2 ion-text color="primary">{{request.title}}</h2>
+      <br>
+      <p>{{request.details}}</p>
+    </ion-card-content>
+    <hr>
+    <ion-row>
+      <ion-col *ngIf="user.id != request.user_id">
+        <button ion-button icon-start clear small (click)="adding =true">
+          <ion-icon name="add-circle"></ion-icon>
+          <div>Add offer</div>
+        </button>
+      </ion-col>
+      <ion-col *ngIf="user.id == request.user_id">
+        <button ion-button icon-start clear small>
+          <ion-icon name="trash" color="danger"></ion-icon>
+          <div>Remove</div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <!---  add offer card -->
+  <ion-card *ngIf="adding">
+    <ion-card-header text-center>
+      <ion-label color="primary">Add Offer</ion-label>
+    </ion-card-header>
     <ion-card-content>
       <ion-item>
-        <p>{{request.details}}</p>
+        <ion-label fixed>Price :</ion-label>
+        <ion-input type="number" [(ngModel)]="offer.price"></ion-input>
       </ion-item>
       <ion-item>
-        <button ion-button *ngIf="!user.id==request.user_id">{{ADD_OFFER|translate}}</button>
-        <button ion-button color="danger" *ngIf="user.id==request.user_id">{{DELETE|translate}}</button>
+        <ion-label fixed>Your offer : </ion-label>
+        <ion-textarea type="number" [(ngModel)]="offer.details"></ion-textarea>
       </ion-item>
     </ion-card-content>
+    <hr>
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-start clear small (click)="add()">
+          <ion-icon name="add-circle"></ion-icon>
+          <div>Add </div>
+        </button>
+        <button ion-button icon-start clear small (click)="adding=false">
+          <ion-icon name="close" color="danger"></ion-icon>
+          <div ion-text color="danger">Cancel</div>
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-card>
 
-  <div *ngIf="offerList$ | async as offers">
-    <ion-card *ngFor=" let o of offers">
+  <!--offers section-->
+  <div *ngIf=" !adding && offerList$ | async as offers" padding>
+    <h3 ion-text color="secondary">Offers : </h3>
+    <hr>
+    <ion-card *ngFor="let o of offers">
       <ion-item>
+        <ion-avatar *ngIf="o.avatar!='null'" item-start>
+          <img [src]="img_url+'/'+o.avatar">
+        </ion-avatar>
+        <ion-avatar *ngIf="!o.avatar=='null'" item-start>
+          <img src="img/marty-avatar.png">
+        </ion-avatar>
+        <h2 ion-text color="secondary">{{o.name}}</h2>
+      </ion-item>
+      <hr>
+      <ion-card-content text-center>
+        <h2 ion-text color="primary">{{o.title}}</h2>
+        <br>
+        <p>{{o.details}}</p>
+      </ion-card-content>
+      <ion-row>
+        <ion-col *ngIf="user.id==request.user_id">
+          <button ion-button icon-start clear small>
+            <ion-icon name="chatbubbles"></ion-icon>
+            <div>Send Message</div>
+          </button>
+        </ion-col>
+        <ion-col *ngIf="user.id==request.user_id">
+            <button ion-button icon-start clear small>
+                <ion-icon name="checkmark-circle" color="secondary"></ion-icon>
+              <div>Accept Offer</div>
+            </button>
+          </ion-col>
 
-      </ion-item>
-      <ion-item>
-        
-      </ion-item>
+        <ion-col *ngIf="user.id==o.user_id">
+          <button ion-button icon-start clear  (click) ="delete(o)">
+            <ion-icon name="trash" color="danger"></ion-icon>
+            <div>Remove</div>
+          </button>
+        </ion-col>
+      </ion-row>
     </ion-card>
   </div>
 

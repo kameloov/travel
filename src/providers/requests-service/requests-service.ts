@@ -14,16 +14,23 @@ import { Request } from '../../models/Request';
 @Injectable()
 export class RequestsProvider {
 
+  private _user_requests: BehaviorSubject<Request[]>;
   private _requests: BehaviorSubject<Request[]>;
   private categoryId: number;
+  private userId : number;
 
   constructor(public http: HttpClient) {
     console.log('Hello RequestsServiceProvider Provider');
     this._requests = new BehaviorSubject([]);
+    this._user_requests = new BehaviorSubject([]);
   }
 
   addRequest(request : Request){
     return this.http.post(SERVICE_URl+'request',request);
+  }
+
+  delete(r : Request){
+    return this.http.delete(SERVICE_URl+'request/'+r.id);
   }
 
   getRequests(categoryId: number): any {
@@ -33,6 +40,22 @@ export class RequestsProvider {
       this._requests.next(data['data']);
     })
     return this._requests.asObservable();
+  }
+
+  getUserRequests(userId : number ):any{
+    this.userId = userId;
+    this.http.get(SERVICE_URl + 'userrequest/' + userId).subscribe(data => {
+      if (data)
+      this._user_requests.next(data['data']);
+    })
+    return this._user_requests.asObservable();
+  }
+
+  refreshUserRequests(){
+    this.http.get(SERVICE_URl + 'userrequest/' + this.userId).subscribe(data => {
+      if (data)
+      this._user_requests.next(data['data']);
+    })
   }
 
   loadMoreRequests() {
@@ -63,6 +86,8 @@ export class RequestsProvider {
       return r;
     })
   }
+
+  
 
 
 }

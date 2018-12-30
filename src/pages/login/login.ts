@@ -5,6 +5,7 @@ import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { User } from '../../providers';
 import { MainPage } from '../';
 import { AccountInfo } from '../../models/AccountInfo';
+import { RequestListPage } from '../request-list/request-list';
 
 @IonicPage()
 @Component({
@@ -18,6 +19,7 @@ export class LoginPage {
   account: AccountInfo;
   // Our translated text strings
   private loginErrorString: string;
+  public loading : boolean ;
 
   constructor(public navCtrl: NavController,    public user: User,  public toastCtrl: ToastController,
     public translateService: TranslateService) {
@@ -30,14 +32,15 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
+    this.loading = true;
     this.user.login(this.account).subscribe((resp) => {
+      this.loading = false;
       if(resp['success']==1)
-      
-      this.navCtrl.push(MainPage,{profile:resp['data'][0]});
+      this.navCtrl.setRoot('RequestListPage');
       else
       this.showError();
     }, (err) => {
-      this.navCtrl.push(MainPage);
+      this.loading = false;
       // Unable to log in
     this.showError();
     });

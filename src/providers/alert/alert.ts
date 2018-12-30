@@ -25,6 +25,7 @@ export class AlertProvider {
       duration: 3000,
       position: 'top'
     });
+    toast.present();
   }
 
 }

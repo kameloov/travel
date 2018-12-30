@@ -22,6 +22,10 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
+export function provideUser(api : Api,storage :Storage){
+return new User(api,storage);
+}
+
 export function provideSettings(storage: Storage) {
   /**
    * The Settings provider takes a set of default settings for your app.
@@ -61,12 +65,12 @@ export function provideSettings(storage: Storage) {
   providers: [
     Api,
     Items,
-    User,
     HTTP,
     Camera,
     SplashScreen,
     StatusBar,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
+    { provide: User, useFactory: provideUser, deps: [Api,Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     RequestsProvider,

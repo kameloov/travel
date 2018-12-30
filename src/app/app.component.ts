@@ -6,6 +6,7 @@ import { Config, Nav, Platform } from 'ionic-angular';
 
 import { FirstRunPage } from '../pages';
 import { Settings } from '../providers';
+import { MyRequestsPage } from '../pages/my-requests/my-requests';
 
 @Component({
   template: `<ion-menu [content]="content">
@@ -15,8 +16,8 @@ import { Settings } from '../providers';
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
-      <ion-list>
+    <ion-content class="menu" >
+      <ion-list >
         <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
           {{p.title}}
         </button>
@@ -35,7 +36,7 @@ export class MyApp {
     { title: 'Tutorial', component: 'TutorialPage' },
     { title: 'Requests', component: 'RequestListPage' },
     { title: 'Add Request', component: 'AddRequestPage' },
-    { title: 'Cards', component: 'CardsPage' },
+    { title: 'My Requests', component: 'MyRequestsPage' },
     { title: 'Content', component: 'ContentPage' },
     { title: 'Login', component: 'LoginPage' },
     { title: 'Signup', component: 'SignupPage' },

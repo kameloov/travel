@@ -1,9 +1,9 @@
 import 'rxjs/add/operator/toPromise';
-
 import { Injectable } from '@angular/core';
-
 import { Api } from '../api/api';
 import { AccountInfo } from '../../models/AccountInfo';
+import { Storage } from '@ionic/storage';
+
 
 /**
  * Most apps have the concept of a User. This is a simple provider
@@ -28,7 +28,9 @@ import { AccountInfo } from '../../models/AccountInfo';
 export class User {
   _user: AccountInfo;
 
-  constructor(public api: Api,public storage : Storage) { }
+  constructor(public api: Api,public storage: Storage) { 
+  
+  }
 
   /**
    * Send a POST request to our login endpoint with the data
@@ -40,7 +42,7 @@ export class User {
       // If the API returned a successful response, mark the user as logged in
       if (res.success == 1) {
         console.log(JSON.stringify(res));
-        accountInfo= res.data;
+        accountInfo= res.data[0];
         this.saveUser(accountInfo);
         this._loggedIn(accountInfo);
       } else {
@@ -55,24 +57,35 @@ export class User {
 
 
   saveUser(user : AccountInfo){
-    this.storage.setItem('USER_INFO',JSON.stringify(user));
+    console.log("saving user ",JSON.stringify(user));
+    this.storage.set('USER_INFO',user);
   }
 
-  getUser(){
-    return (JSON.parse(this.storage.getItem('USER_INFO')));
+  getUser():any{
+     return this.storage.get('USER_INFO').then(data=>{
+       console.log("getting user",JSON.stringify(data));
+      return data;
+    }) 
+ /*    let u = new AccountInfo();
+    u.id = 4;
+    u.email = "kameloov@gmail.com";
+    u.name = " kamel";
+    u.phone = "48648956445";
+    u.address = "khartoum"
+    return u ; */
   }
   /**
    * Send a POST request to our signup endpoint with the data
    * the user entered on the form.
    */
+
   signup(accountInfo: any) {
     let seq = this.api.post('users/register', accountInfo).share();
-
     seq.subscribe((res: any) => {
       console.log(JSON.stringify(res));
       // If the API returned a successful response, mark the user as logged in
       if (res.success == 1) {
-        accountInfo.id = res.data;
+        accountInfo = res.data[0];
         this.saveUser(accountInfo);
         this._user = accountInfo;
       }

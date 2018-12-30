@@ -1,0 +1,40 @@
+<!--
+  Generated template for the RequestListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar>
+      <ion-title>My Requests</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content class="bg" padding>
+   
+    <div *ngIf="requestList$ | async as requests">
+        <ion-card  calss= "card" *ngFor="let r  of requests">
+         <!--    <ion-item>
+              <ion-avatar *ngIf="r.avatar!='null'" item-start>
+                <img [src]="img_url+'/'+r.avatar">
+              </ion-avatar>
+              <ion-avatar *ngIf = "r.avatar=='null'" item-start>
+                  <img src="img/marty-avatar.png">
+                </ion-avatar>
+              <h2 ion-text color="secondary">{{r.name}}</h2>
+            </ion-item>
+            <hr> -->
+            <ion-card-content>
+              <h2 ion-text color="primary">{{r.title}}</h2>
+              <br>
+              <p>{{r.details}}</p>
+              <br>
+              <button ion-button small color="primary" (click) ="showDetails(r)">Details</button>"
+              <button ion-button small  color = "danger" (click)= "delete(r)">Delete</button>
+            </ion-card-content>
+          </ion-card>
+      <ion-card>
+        <ion-card-title *ngIf ="!requests ||requests.length ==0" text-center><ion-spinner></ion-spinner></ion-card-title>
+      </ion-card>
+    </div>
+  </ion-content>

@@ -5,82 +5,87 @@
 
 </ion-header>
 
-<ion-content>
-
-  <ion-card>
-    <form *ngIf="form" [formGroup]="form" (submit)="doSignup()">
-      <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
-      <div class="profile-image-wrapper" (click)="getPicture()">
-        <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
-          <ion-icon name="add"></ion-icon>
-          <div>
-            Add Image
+<ion-content class="bg" no-bounce>
+  <form *ngIf="form" [formGroup]="form" (submit)="doSignup()">
+    <ion-slides #slides pager="false">
+      <ion-slide>
+        <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)" />
+        <div class="profile-image-wrapper" (click)="getPicture()">
+          <div class="profile-image-placeholder" *ngIf="!this.form.controls.profilePic.value">
+            <!--   <ion-icon name="add"></ion-icon>
+                <div>
+                  Add Image
+                </div> -->
           </div>
+          <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
         </div>
-        <div class="profile-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.profilePic.value"></div>
-      </div>
-      <ion-list>
-
-        <ion-item>
-          <ion-label floating>Name *</ion-label>
-          <ion-input type="text" formControlName="name"></ion-input>
+        <ion-item padding>
+          <ion-input text-center type="text" formControlName="name" placeholder="Name"></ion-input>
+        </ion-item>
+        <br>
+        <br>
+      </ion-slide>
+      <ion-slide>
+        <br>
+        <br>
+        <ion-item padding>
+          <ion-input type="email" formControlName="email" placeholder="Email"></ion-input>
+        </ion-item>
+        <ion-item padding>
+          <ion-input type="password" formControlName="password" placeholder="Password" required></ion-input>
         </ion-item>
 
-        <ion-item>
-          <ion-label floating>Email *</ion-label>
-          <ion-input type="email" formControlName="email"></ion-input>
+        <ion-item padding>
+          <ion-input type="password" placeholder="Confirm password" required></ion-input>
         </ion-item>
+        <br>
+        <br>
+
+      </ion-slide>
+      <ion-slide>
+        <div >
+          <h4 ion-text color="secondary">Select your Country </h4>
+          <ion-list class="slide-list">
+            <ion-item *ngFor=" let c of countries" (click)="selectCountry(c)" padding >
+                <ion-thumbnail item-start>
+                <img [src]="'assets/img/flags/'+c.country_code.toLowerCase()+'.png'">
+                </ion-thumbnail>
+                <ion-label color="light">{{c.country_name}}</ion-label>
+               <!--  <ion-checkbox color="primary" [checked]="country && country.id == c.id">
+                </ion-checkbox>
+           -->
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-slide>
+      <ion-slide>
         <ion-row padding>
           <ion-col col-5>
             <ion-label class="item-label">Country *</ion-label>
           </ion-col>
           <ion-col col-7>
-            <button ion-button type="button" outline text-center block (click)="showCountries()">{{country!=null ?
+            <button ion-button type="button" outline text-center block (click)="showCountries()">{{country!=null
+              ?
               country.country_name:'select country'}}</button>
           </ion-col>
         </ion-row>
-        <!-- 
-        <ion-select formControlName="country"  multiple="false" >
-          <ion-option *ngFor="let c of countries" [value]="c.id">{{c.country_name}}</ion-option>
-        </ion-select> -->
 
-        <!--
-      Want to add a Username? Here you go:
-
-      <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
-      </ion-item>
-      -->
-
-        <ion-item>
-          <ion-label>Password *</ion-label>
-          <ion-input type="password" formControlName="password" required></ion-input>
-        </ion-item>
-
-
-        <ion-item>
-          <ion-label>Confirm Password *</ion-label>
-          <ion-input type="password" required></ion-input>
-        </ion-item>
         <ion-item>
           <ion-label>Phone</ion-label>
           <ion-input type="number" formControlName="phone"></ion-input>
         </ion-item>
-
         <ion-item>
           <ion-label>Address</ion-label>
           <ion-input type="text" formControlName="address" name="address"></ion-input>
         </ion-item>
-        <div text-center *ngIf="working">
-          <ion-spinner name="bubbles"></ion-spinner>
-        </div>
+        <br>
+        <br>
+      </ion-slide>
+    </ion-slides>
 
-        <div padding>
-          <button ion-button color="primary" type="submit" block [disabled]="!form.valid">Register</button>
-        </div>
-      </ion-list>
-    </form>
+  </form>
+  <div calss="btn-container" padding margin>
+    <button ion-button color="primary" block (click)=doSignup()>{{getTitle()}} <ion-spinner name="bubbles" *ngIf="working"></ion-spinner></button>
 
-  </ion-card>
+  </div>
 </ion-content>

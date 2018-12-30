@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, ToastController, Platform, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, Platform, ModalController, Slides } from 'ionic-angular';
 
 import { User, Api } from '../../providers';
 import { MainPage } from '../';
@@ -7,7 +7,8 @@ import { AccountInfo } from '../../models/AccountInfo';
 import { Country } from '../../models/Country';
 import { Camera } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CountryListPage } from '../country-list/country-list';
+import { AlertProvider } from '../../providers/alert/alert';
+import { RequestListPage } from '../request-list/request-list';
 
 @IonicPage()
 @Component({
@@ -25,37 +26,39 @@ export class SignupPage {
   // Our translated text strings
   private signupErrorString: string;
   form: FormGroup;
-  public country : any;
-  public working : boolean ;
-
+  public country: any;
+  public working: boolean;
+  public position: number = 0;
+  @ViewChild(Slides) slides: Slides;
 
   constructor(public navCtrl: NavController, public user: User, public toastCtrl: ToastController,
-    api: Api, public camera: Camera,public modalCtrl : ModalController,formBuilder: FormBuilder, 
-    platform: Platform) {
+    api: Api, public camera: Camera, public modalCtrl: ModalController, formBuilder: FormBuilder,
+    platform: Platform, public alert: AlertProvider) {
     this.form = formBuilder.group({
       profilePic: [''],
       name: ['', Validators.required],
       address: [''],
       phone: [''],
-      password: ['',Validators.required],
-      email: ['',Validators.required],
-      country: ['',Validators.required]
+      password: ['', Validators.required],
+      email: ['', Validators.required],
+      country: ['', Validators.required]
     });
 
-      api.get('countries').subscribe((res: any) => {
-        if (res.success == 1) {
-          this.countries = res.data;
-        } else {
-          
-        }
-      },
-      (err)=>{
+    api.get('countries').subscribe((res: any) => {
+      if (res.success == 1) {
+        this.countries = res.data;
+        console.log(JSON.stringify(this.countries));
+      } else {
+
+      }
+    },
+      (err) => {
         console.log(JSON.stringify(err));
       });
- 
+
 
     this.account = new AccountInfo();
- 
+
   }
 
   getPicture() {
@@ -96,44 +99,42 @@ export class SignupPage {
     })
     addModal.present();
   }
- 
+
+  public selectCountry(c : Country){
+    this.country =c;
+    this.form.patchValue({ 'country': c.id });
+  }
 
   getProfileImageStyle() {
     return 'url(' + this.form.controls['profilePic'].value + ')'
   }
 
-  doSignup() {
+  getTitle(){
+    if (!this.slides)
+    return "Next";
+    return this.slides.isEnd()?  "Register":"Next" ;
+  }
+  signUp() {
     this.working = true;
     // Attempt to login in through our User service
     this.user.signup(this.form.value).subscribe((resp) => {
       this.working = false;
       if (resp['success'] == 1) {
-        this.navCtrl.push(MainPage);
-        let toast = this.toastCtrl.create({
-          message: 'Registerd successfully',
-          duration: 2000,
-          position: 'top'
-        });
-        toast.present();
+        this.alert.showToast('Registerd successfully');
+        this.navCtrl.setRoot('RequestListPage');
       } else {
-        let toast = this.toastCtrl.create({
-          message: resp['message'],
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
+        this.alert.showToast(resp['message']);
       }
     }, (err) => {
-        this.working = false;
+      this.working = false;
       // this.navCtrl.push(MainPage);
-
-      // Unable to sign up
-      let toast = this.toastCtrl.create({
-        message: this.signupErrorString,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
+      this.alert.showToast(this.signupErrorString);
     });
+  }
+  doSignup() {
+    if (!this.slides.isEnd())
+    this.slides.slideNext();
+     else 
+     this.signUp();
   }
 }
