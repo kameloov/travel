@@ -44,17 +44,27 @@
       </ion-slide>
       <ion-slide>
         <div >
-          <h4 ion-text color="secondary">Select your Country </h4>
+          <h5 ion-text color="secondary">Select your Country </h5>
           <ion-list class="slide-list">
-            <ion-item *ngFor=" let c of countries" (click)="selectCountry(c)" padding >
-                <ion-thumbnail item-start>
-                <img [src]="'assets/img/flags/'+c.country_code.toLowerCase()+'.png'">
-                </ion-thumbnail>
+     <!--        <ion-item *ngFor=" let c of countries" (click)="selectCountry(c)" padding >
+                <ion-avatar item-start>
+                <img class="flag" [src]="'assets/img/flags/'+c.country_code.toLowerCase()+'.png'">
+                </ion-avatar>
                 <ion-label color="light">{{c.country_name}}</ion-label>
-               <!--  <ion-checkbox color="primary" [checked]="country && country.id == c.id">
+                 <ion-checkbox color="primary" [checked]="country && country.id == c.id">
                 </ion-checkbox>
+                 </ion-item> 
            -->
-            </ion-item>
+           <ion-row *ngFor= "let c of counteries " padding> 
+             <ion-col col-3>
+              <img class="flag" [src]="'assets/img/flags/'+c.country_code.toLowerCase()+'.png'">
+             </ion-col>
+             <ion-col col-9>
+              <ion-label color="light">{{c.country_name}}</ion-label>
+             </ion-col>
+           </ion-row>
+           
+
           </ion-list>
         </div>
       </ion-slide>
