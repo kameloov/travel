@@ -10,6 +10,7 @@ import { Offer } from '../../models/Offer';
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
+
 @Injectable()
 export class OfferProvider {
   private _offers: BehaviorSubject<Offer[]>;
