@@ -29,6 +29,7 @@ export class RequestDetailsPage {
   public offer : Offer;
   public adding : boolean = false;
   public loading : boolean = false;
+  public offered : boolean =  true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public msg : AlertProvider,
     public u: User, public offerService: OfferProvider) {
@@ -69,15 +70,27 @@ export class RequestDetailsPage {
     })
   }
 
+  hasOffer(){
+    let s = this.offerService.hasOffer(this.user.id,this.request.id).subscribe(data=>{
+         if (data['data'])
+         this.offered = true;
+         else 
+         this.offered = false;
+         s.unsubscribe();
+    })
+  }
+
   ionViewDidLoad() {
    
   }
   ionViewDidEnter(){
+
     this.u.getUser().then(data=>{
       this.user = data;
       console.log("user",JSON.stringify(data));
       console.log("request",JSON.stringify(this.request));
     });
     this.offerList$ = this.offerService.getOffers(this.request.id);
+    this.hasOffer();
   }
 }

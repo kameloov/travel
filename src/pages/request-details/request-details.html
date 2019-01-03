@@ -31,7 +31,7 @@
     </ion-card-content>
     <hr>
     <ion-row>
-      <ion-col *ngIf="user.id != request.user_id">
+      <ion-col *ngIf="!offered && user.id != request.user_id">
         <button ion-button icon-start clear small (click)="adding =true">
           <ion-icon name="add-circle"></ion-icon>
           <div>Add offer</div>
@@ -77,7 +77,7 @@
 
   <!--offers section-->
   <div *ngIf=" !adding && offerList$ | async as offers" padding>
-    <h3 ion-text color="secondary">Offers : </h3>
+    <h5 ion-text color="secondary">Offers : </h5>
     <hr>
     <ion-card *ngFor="let o of offers">
       <ion-item>

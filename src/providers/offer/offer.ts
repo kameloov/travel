@@ -25,7 +25,9 @@ export class OfferProvider {
     return this.http.post(SERVICE_URl+'request',request);
   }
  */
+
   getOffers(requestId: number): any {
+    this._offers.next([]);
     this.requestId = requestId;
     this.http.get(SERVICE_URl + 'offers/' + requestId + '/0').subscribe(data => {
       if (data)
@@ -59,6 +61,10 @@ export class OfferProvider {
         }
       })
     }
+  }
+
+  hasOffer(userId : number , requestId : number){
+    return this.http.get(SERVICE_URl+'hasOffer/'+requestId+'/'+userId);
   }
 
   private getMinId(requests: Offer[]): number {
