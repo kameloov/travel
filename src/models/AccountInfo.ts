@@ -9,5 +9,6 @@ export class AccountInfo{
     logged:number;
     gender:number=0;
     country_id : number;
-    
+    whatsapp: string ; 
+    facebook : string;
 }

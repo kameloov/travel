@@ -19,7 +19,7 @@ export class MyOffersPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyOffersPage');
+
   }
 
 }

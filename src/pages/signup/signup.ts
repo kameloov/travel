@@ -38,11 +38,12 @@ export class SignupPage {
       profilePic: [''],
       name: ['', Validators.required],
       address: [''],
-      phone: [''],
+      phone: ['', Validators.required],
       password: ['', Validators.required],
       email: ['', Validators.required],
       country: ['', Validators.required]
     });
+
 
     api.get('countries').subscribe((res: any) => {
       if (res.success == 1) {
@@ -88,20 +89,8 @@ export class SignupPage {
     reader.readAsDataURL(event.target.files[0]);
   }
 
-
-  public showCountries() {
-    let addModal = this.modalCtrl.create('CountryListPage');
-    addModal.onDidDismiss(country => {
-      if (country) {
-        this.country = country;
-        this.form.patchValue({ 'country': this.country.id });
-      }
-    })
-    addModal.present();
-  }
-
-  public selectCountry(c : Country){
-    this.country =c;
+  public selectCountry(c: Country) {
+    this.country = c;
     this.form.patchValue({ 'country': c.id });
   }
 
@@ -109,16 +98,32 @@ export class SignupPage {
     return 'url(' + this.form.controls['profilePic'].value + ')'
   }
 
-  getTitle(){
+  getTitle() {
     if (!this.slides)
-    return "Next";
-    return this.slides.isEnd()?  "Register":"Next" ;
+      return "Next";
+    return this.slides.isEnd() ? "Register" : "Next";
   }
+
+  validateData() {
+    if (!this.form.valid) {
+      this.alert.showToast('Please fill empty fields');
+    }
+    console.log("form value :  ",this.form.value);
+    console.log("form valid :  ",this.form.valid);
+    return this.form.valid;
+  }
+
   signUp() {
-    this.working = true;
+
     // Attempt to login in through our User service
+    if (!this.validateData())
+      return;
+    this.working = true;
     this.user.signup(this.form.value).subscribe((resp) => {
       this.working = false;
+      if (!resp) {
+        this.alert.showToast('Error , Registration failed');
+      }
       if (resp['success'] == 1) {
         this.alert.showToast('Registerd successfully');
         this.navCtrl.setRoot('RequestListPage');
@@ -132,9 +137,10 @@ export class SignupPage {
     });
   }
   doSignup() {
+  
     if (!this.slides.isEnd())
-    this.slides.slideNext();
-     else 
-     this.signUp();
+      this.slides.slideNext();
+    else
+      this.signUp();
   }
 }

@@ -18,6 +18,7 @@ import { SERVICE_URl } from '../../providers';
   selector: 'page-request-list',
   templateUrl: 'request-list.html',
 })
+
 export class RequestListPage {
   public categoryList$ : Observable<ServiceResponse>;
   public requestList$  : Observable<Request []>;
