@@ -27,8 +27,11 @@ export class RequestListPage {
 
   constructor(public navCtrl: NavController, public requestService : RequestsProvider) {
 
+    
   }
-
+  public viewUser(userId : number){
+    this.navCtrl.push('UserProfilePage',{id : userId});
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RequestListPage');

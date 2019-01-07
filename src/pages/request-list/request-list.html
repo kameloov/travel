@@ -22,8 +22,8 @@
     </ion-select>
   </ion-item>
   <div *ngIf="requestList$ | async as requests">
-      <ion-card  calss= "card" *ngFor="let r  of requests"(click) ="showDetails(r)">
-          <ion-item>
+      <ion-card  calss= "card" *ngFor="let r  of requests">
+          <ion-item (click)="viewUser(r.user_id)">
             <ion-avatar *ngIf="r.avatar!='null'" item-start>
               <img [src]="img_url+'/'+r.avatar">
             </ion-avatar>
@@ -33,7 +33,7 @@
             <h2 ion-text color="secondary">{{r.name}}</h2>
           </ion-item>
           <hr>
-          <ion-card-content text-center>
+          <ion-card-content text-center (click) ="showDetails(r)">
             <h2 ion-text color="primary">{{r.title}}</h2>
             <br>
             <p>{{r.details}}</p>

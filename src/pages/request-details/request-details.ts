@@ -7,6 +7,7 @@ import { User, SERVICE_URl } from '../../providers';
 import { OfferProvider } from '../../providers/offer/offer';
 import { Request } from '../../models/Request';
 import { AlertProvider } from '../../providers/alert/alert';
+import { UserProfilePage } from '../user-profile/user-profile';
 
 /**
  * Generated class for the RequestDetailsPage page.
@@ -59,6 +60,10 @@ export class RequestDetailsPage {
       this.loading = false;
       this.msg.showToast('Error , failed to add offer');
     });
+  }
+
+  public viewUser(userId : number){
+    this.navCtrl.push('UserProfilePage',{id : userId});
   }
 
   delete(o : Offer){

@@ -55,6 +55,10 @@ export class User {
     return seq;
   }
 
+  public getUserById(id : number){
+    return this.api.get('users/'+id);
+  }
+
 
   saveUser(user : AccountInfo){
     console.log("saving user ",JSON.stringify(user));

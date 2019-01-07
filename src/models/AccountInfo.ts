@@ -11,4 +11,5 @@ export class AccountInfo{
     country_id : number;
     whatsapp: string ; 
     facebook : string;
+    avatar : string;
 }
