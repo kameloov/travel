@@ -8,6 +8,8 @@ import { OfferProvider } from '../../providers/offer/offer';
 import { Request } from '../../models/Request';
 import { AlertProvider } from '../../providers/alert/alert';
 import { UserProfilePage } from '../user-profile/user-profile';
+import { Discussion } from '../../models/Discussion';
+import { SendMessagePage } from '../send-message/send-message';
 
 /**
  * Generated class for the RequestDetailsPage page.
@@ -88,8 +90,19 @@ export class RequestDetailsPage {
   ionViewDidLoad() {
    
   }
-  ionViewDidEnter(){
 
+  public sendMessage(offer : Offer){
+    let d = new Discussion();
+    d.discussion_title = this.request.title;
+    d.user1_id = this.request.user_id;
+    d.user2_id = offer.user_id;
+    d.request_id = this.request.id;
+    d.offer_id = offer.id;
+    this.navCtrl.push('SendMessagePage',{discussion : d});
+    //console.log('send message ', JSON.stringify(offer))
+  }
+
+  ionViewDidEnter(){
     this.u.getUser().then(data=>{
       this.user = data;
       console.log("user",JSON.stringify(data));

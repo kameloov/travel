@@ -12,7 +12,18 @@
 
 </ion-header>
 
+<ion-content class="bg" padding>
 
-<ion-content padding>
-
+  <div *ngIf="discussionList$ | async as discussions">
+      <ion-card  calss= "card" *ngFor="let d  of discussions">
+          <ion-card-content text-center (click) ="shomwMessages(d)">
+            <h2 ion-text color="primary">{{d.discussion_title}}</h2>
+            <br>
+            <p>{{d.last_msg}}</p>
+          </ion-card-content>
+        </ion-card>
+    <ion-card>
+      <ion-card-title *ngIf ="!discussions ||discussions.length ==0" text-center> <ion-spinner></ion-spinner></ion-card-title>
+    </ion-card>
+  </div>
 </ion-content>

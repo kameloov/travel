@@ -29,6 +29,13 @@ export class DiscussionProvider {
     return this._discussions.asObservable();
   }
 
+  getDiscussion(id : number){
+    return this.http.get(SERVICE_URl+'discussion/'+id);
+  }
+
+  getDiscussionByOffer(id : number){
+    return this.http.get(SERVICE_URl+'discussionbyoffer/'+id);
+  }
     
   refresh(){
     this.http.get(SERVICE_URl + 'discussions/' + this.userId + '/0').subscribe(data => {

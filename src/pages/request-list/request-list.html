@@ -14,23 +14,17 @@
 
 
 <ion-content class="bg" padding>
-  <ion-item *ngIf="1==2">
-    <ion-select [(ngModel)]="categoryId" *ngIf="categoryList$ | async  as categories" (ngModelChange)="setCategory() "
-      interface="popover">
-      <ion-option value=0> all</ion-option>
-      <ion-option *ngFor=" let c of categories.data" [value]="c.id"> {{c.name}}</ion-option>
-    </ion-select>
-  </ion-item>
+
   <div *ngIf="requestList$ | async as requests">
       <ion-card  calss= "card" *ngFor="let r  of requests">
-          <ion-item (click)="viewUser(r.user_id)">
+          <ion-item>
             <ion-avatar *ngIf="r.avatar!='null'" item-start>
-              <img [src]="img_url+'/'+r.avatar">
+              <img [src]="img_url+'/'+r.avatar"  (click)="viewUser(r.user_id)">
             </ion-avatar>
-            <ion-avatar *ngIf = "r.avatar=='null'" item-start>
+            <ion-avatar *ngIf = "r.avatar=='null'" item-start  (click)="viewUser(r.user_id)">
                 <img src="img/marty-avatar.png">
               </ion-avatar>
-            <h2 ion-text color="secondary">{{r.name}}</h2>
+            <h2 ion-text color="secondary"  (click)="viewUser(r.user_id)">{{r.name}}</h2>
           </ion-item>
           <hr>
           <ion-card-content text-center (click) ="showDetails(r)">

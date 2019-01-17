@@ -11,12 +11,41 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-grid>
+<ion-content class="bg">
+  <ion-card *ngIf= "account">
+    <ion-card-content>
+      <ion-item>
+          <ion-avatar item-start>
+              <img  width = "100px" height="100px" [src]="url+account.avatar">
+            </ion-avatar>
+            <h1> {{account.name}} </h1>
+            <p>{{account.country_name}}</p>
+      </ion-item>
+      <hr>
+      <ion-item>
+        <b>Email : </b> {{account.email}}
+        <br>
+        <br>
+        <b>Phone :</b> {{account.phone}}
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Statistics
+      <hr>
+    </ion-card-header>
+    <ion-card-content>
+      
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid *ngIf = "false">
     <ion-row>
       <ion-col col-4>
         <ion-avatar>
-          <img [src]="url+account.avatar">
+          <img  width = "100px" height="100px" src="url+account.avatar">
         </ion-avatar>
       </ion-col>
       <ion-col col-8>

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Alert, ModalController } from 'ionic-angular';
 import { RequestsProvider } from '../../providers/requests-service/requests-service';
 import { Request } from '../../models/Request';
 import { AlertProvider } from '../../providers/alert/alert';
 import { Observable } from 'rxjs';
 import { User } from '../../providers';
-import { RequestListPage } from '../request-list/request-list';
+import { Country } from '../../models/Country';
+import { Category } from '../../models/Category';
 
 /**
  * Generated class for the AddRequestPage page.
@@ -21,20 +22,29 @@ import { RequestListPage } from '../request-list/request-list';
 })
 export class AddRequestPage {
   public request: Request;
+  public country :Country;
+  public category : Category;
   public loading: boolean;
   public categoryList$ : Observable<Request[]>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public user : User,
-    public requestService: RequestsProvider, private msg: AlertProvider) {
+    public requestService: RequestsProvider, private msg: AlertProvider, public modalCtrl : ModalController) {
       this.request = new Request();
       this.categoryList$ = requestService.getCategories();
       
   }
+  public getCategoryCaption(){
+    return this.category ? this.category.name : 'Select Category';
+  }
   
- cancel(){
+  public getCountryCaption(){
+    return this.country ? this.country.country_name : 'Select Country';
+  }
+  
+ public cancel(){
   this.navCtrl.setRoot('RequestListPage');
  }
-  add() {
+  public add() {
     this.loading = true;
     this.requestService.addRequest(this.request).subscribe(data => {
       if (data) {
@@ -51,7 +61,28 @@ export class AddRequestPage {
       this.msg.showToast('Error , failed to add request');
     });
   }
+  
+  public selectCountry() {
+    let countryModal = this.modalCtrl.create('CountryListPage');
+    countryModal.onDidDismiss(country => {
+      if (country) {
+        this.country = country;
+        this.request.country_id = country.id;
+      }
+    })
+    countryModal.present();
+  }
 
+  public selectCategory() {
+    let categoryModal = this.modalCtrl.create('CategoryListPage');
+    categoryModal.onDidDismiss(category => {
+      if (category) {
+        this.category = category;
+        this.request.category_id = category.id;
+      }
+    })
+    categoryModal.present();
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad AddRequestPage');
@@ -59,4 +90,5 @@ export class AddRequestPage {
   ionViewDidEnter(){
     this.user.getUser().then(data=> this.request.user_id = data['id']);
   }
+
 }

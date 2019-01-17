@@ -39,16 +39,12 @@
         </ion-item>
         <br>
         <br>
-
       </ion-slide>
       <ion-slide>
         <div>
           <h5 ion-text color="secondary">Select your Country </h5>
           <ion-list  radio-group  formControlName ="country" class="slide-list">
             <ion-item *ngFor=" let c of countries" (click)="selectCountry(c)" padding>
-            <!--   <ion-avatar item-start>
-                <img class="flag" [src]="'assets/img/flags/'+c.country_code.toLowerCase()+'.png'">
-              </ion-avatar> -->
               <ion-label color="light">{{c.country_name}}</ion-label>
               <ion-radio [value]="c.id"></ion-radio>
             </ion-item>

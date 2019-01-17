@@ -17,37 +17,54 @@ import { AlertProvider } from '../../providers/alert/alert';
   templateUrl: 'user-profile.html',
 })
 export class UserProfilePage {
-  public id : number ;
-  public url : String ;
-  public account : AccountInfo;
+  public id: number;
+  public remote: boolean;
+  public url: String;
+  public account: AccountInfo;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private user : User,
-     public alert : AlertProvider) {
-    this.id = navParams.get('id');
-    this.url = SERVICE_URl+'icons/';
+  constructor(public navCtrl: NavController, public navParams: NavParams, private user: User,
+    public alert: AlertProvider) {
+    if (navParams.get('id')) {
+      this.id = navParams.get('id');
+      this.remote = true;
+    }
+    this.url = SERVICE_URl + 'icons/';
+
   }
 
   ionViewDidLoad() {
-    
+
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
+    if (this.remote)
     this.loadUser();
+    else 
+    this.displayLocal();
   }
 
-  public loadUser(){
-    this.user.getUserById(this.id).subscribe(data=>{
-      if (data){
-        if (data['success']==1){
-            this.account = data['data'];
-        } else 
-          this.alert.showToast('Error , unable to load user data !!')
-        
-      } else 
-    }, 
-    err=>{
-
+  displayLocal(){
+    this.user.getUser().then(data=>{
+      this.id = data['id'];
+      this.loadUser();
     })
+  }
+  public loadUser() {
+    console.log('getting user data ');
+    this.user.getUserById(this.id).subscribe(data => {
+      if (data) {
+        console.log(JSON.stringify(data));
+        if (data['success'] == 1) {
+          this.account = data['data'][0];
+        } else
+          this.alert.showToast('Error , unable to load user data !!')
+
+      } else
+        this.alert.showToast('Error , unable to load user data !!');
+    },
+      err => {
+        this.alert.showToast('Error , unable to load user data !!')
+      })
   }
 
 }

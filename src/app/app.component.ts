@@ -7,6 +7,7 @@ import { Config, Nav, Platform } from 'ionic-angular';
 import { FirstRunPage } from '../pages';
 import { Settings } from '../providers';
 import { MyRequestsPage } from '../pages/my-requests/my-requests';
+import { UserProfilePage } from '../pages/user-profile/user-profile';
 
 @Component({
   template: `<ion-menu [content]="content">
@@ -32,6 +33,7 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
+
   pages: any[] = [
     { title: 'Tutorial', component: 'TutorialPage' },
     { title: 'Requests', component: 'RequestListPage' },
@@ -43,7 +45,7 @@ export class MyApp {
     { title: 'Master Detail', component: 'ListMasterPage' },
     { title: 'Menu', component: 'MenuPage' },
     { title: 'Settings', component: 'SettingsPage' },
-    { title: 'Search', component: 'SearchPage' }
+    { title: 'My account', component: 'UserProfilePage' }
   ]
 
   constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {

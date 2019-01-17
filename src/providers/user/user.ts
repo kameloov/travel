@@ -56,7 +56,7 @@ export class User {
   }
 
   public getUserById(id : number){
-    return this.api.get('users/'+id);
+    return this.api.get('user/'+id);
   }
 
 

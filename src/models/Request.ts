@@ -9,4 +9,5 @@ export class Request{
  start_date : string 
  end_dt : string 
   published : number;
+  country_id: number;
 }

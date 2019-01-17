@@ -16,7 +16,7 @@ export class RequestsProvider {
 
   private _user_requests: BehaviorSubject<Request[]>;
   private _requests: BehaviorSubject<Request[]>;
-  private categoryId: number;
+  private countryId: number;
   private userId : number;
 
   constructor(public http: HttpClient) {
@@ -33,13 +33,13 @@ export class RequestsProvider {
     return this.http.delete(SERVICE_URl+'request/'+r.id);
   }
 
-  getRequests(categoryId: number): any {
-    this.categoryId = categoryId;
-    this.http.get(SERVICE_URl + 'request/' + categoryId + '/0').subscribe(data => {
+  getRequests(countryId: number): any {
+    this.countryId = countryId;
+    this.http.get(SERVICE_URl + 'request/' + countryId + '/0').subscribe(data => {
       if (data)
       this._requests.next(data['data']);
     })
-    return this._requests.asObservable();
+      return this._requests.asObservable();
   }
 
   getUserRequests(userId : number ):any{
@@ -61,7 +61,7 @@ export class RequestsProvider {
   loadMoreRequests() {
     let current = this._requests.value;
     if (current) {
-      this.http.get(SERVICE_URl + 'request/' + this.categoryId + '/' + this.getMinId(current)).subscribe(data => {
+      this.http.get(SERVICE_URl + 'request/' + this.countryId + '/' + this.getMinId(current)).subscribe(data => {
         if (data) {
           let merge = current.concat(data['data']);
           this._requests.next(merge);
@@ -83,11 +83,7 @@ export class RequestsProvider {
       let r = new ServiceResponse();
       r.success = res['success'] == 1;
       r.data = r.success ? res['data'] : res['message'];
-      return r;
+      return r.success ? res['data'] :[];
     })
   }
-
-  
-
-
 }
